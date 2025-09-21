@@ -1,50 +1,51 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Button, Text, View } from "react-native";
+import * as Location from 'expo-location';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
-const Stack = createNativeStackNavigator();
-
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Pantalla Home</Text>
-      <Button
-        title="Ir a Perfil"
-        onPress={() => navigation.navigate("Profile")}
-      />
-    </View>
-  );
-}
-
-function ProfileScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Pantalla Perfil</Text>
-      <Button
-        title="Ir a Configuración"
-        onPress={() => navigation.navigate("Settings")}
-      />
-    </View>
-  );
-}
-
-function SettingsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Pantalla Configuración</Text>
-      <Button title="Volver al Home" onPress={() => navigation.navigate("Home")} />
-    </View>
-  );
-}
+ 
 
 export default function App() {
+
+  const buscaLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      return Alert.alert('Permiso denegado')
+    }
+    const location= await Location.getCurrentPositionAsync({})
+    console.log(location)
+}
+
+  useEffect(() => {
+    buscaLocation();
+  })
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+      <MapView style={styles.mapa}>
+        <Marker
+          coordinate={{latitude: 23.752388, longitude: -999.142277}}
+          title="Mi ubicación"
+          description="Estoy aquí"
+        />
+      </MapView>
+
+      <StatusBar style="auto" />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mapa: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#440a0aff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
