@@ -1,77 +1,42 @@
-package com.example.geolocalizacion;
+package com.example.mapas;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.config.Configuration;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView txtLocation;
-    private static final int REQUEST_CODE_LOCATION = 1;
-    private FusedLocationProviderClient fusedLocationClient;
-
+    private MapView map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        Configuration.getInstance().setUserAgentValue(getPackageName());
         setContentView(R.layout.activity_main);
-        txtLocation = findViewById(R.id.txtLabel);
+        map = findViewById(R.id.map);
+        map.setMultiTouchControls(true);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        //CDMX
+        GeoPoint startPoint = new GeoPoint(19.4326, -99.1332);
+        map.getController().setCenter(startPoint);
+        map.getController().setZoom(17);
 
-        // Verificamos permisos
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_CODE_LOCATION
-            );
-        } else {
-            getLocation();
-        }
-    }
+        //Marcador
+        Marker marker = new Marker(map);
+        marker.setPosition(startPoint);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        marker.setTitle("CDMX");
+        map.getOverlays().add(marker);
 
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, location -> {
-                        if (location != null) {
-                            txtLocation.setText(
-                                    "Latitude: " + location.getLatitude() +
-                                            "\nLongitude: " + location.getLongitude()
-                            );
-                        } else {
-                            txtLocation.setText("No se pudo obtener la ubicación.");
-                        }
-                    });
-        }
-    }
-
-    // Manejo de permisos
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_CODE_LOCATION) {
-            if (grantResults.length > 0 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocation(); // Usuario dio permiso
-            } else {
-                txtLocation.setText("Permiso de ubicación denegado.");
-            }
-        }
     }
 }
