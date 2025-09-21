@@ -1,56 +1,50 @@
-import { useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Button, Text, View } from "react-native";
 
-export default function Login() {
-  const [usuario, setUsuario] = useState("");
-  const [password, setPassword] = useState("");
+const Stack = createNativeStackNavigator();
 
-  //  Usuario y contraseña correctos
-  const usuarioCorrecto = "Galicia";
-  const passwordCorrecto = "1234";
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (usuario === usuarioCorrecto && password === passwordCorrecto) {
-      alert(` Bienvenido ${usuario}`);
-    } else {
-      alert("Usuario o contraseña incorrecto");
-    }
-  };
-
+function HomeScreen({ navigation }) {
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-2xl shadow-lg w-80"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Pantalla Home</Text>
+      <Button
+        title="Ir a Perfil"
+        onPress={() => navigation.navigate("Profile")}
+      />
+    </View>
+  );
+}
 
-        <label className="block mb-2">Usuario:</label>
-        <input
-          type="text"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
-          className="w-full border p-2 rounded mb-4"
-          required
-        />
+function ProfileScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Pantalla Perfil</Text>
+      <Button
+        title="Ir a Configuración"
+        onPress={() => navigation.navigate("Settings")}
+      />
+    </View>
+  );
+}
 
-        <label className="block mb-2">Contraseña:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded mb-4"
-          required
-        />
+function SettingsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Pantalla Configuración</Text>
+      <Button title="Volver al Home" onPress={() => navigation.navigate("Home")} />
+    </View>
+  );
+}
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          Ingresar
-        </button>
-      </form>
-    </div>
-  );
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
