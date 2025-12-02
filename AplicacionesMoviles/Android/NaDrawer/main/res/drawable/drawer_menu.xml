@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <group android:checkableBehavior="single">
+    <item
+      android:id="@+id/nav_tip"
+      android:icon="@android:drawable/ic_menu_edit"
+      android:title="Tip Calculator" />
+    <item
+      android:id="@+id/nav_currency"
+      android:icon="@android:drawable/ic_menu_rotate"
+      android:title="Convertir Divisas" />
+    <item
+      android:id="@+id/nav_imc"
+      android:icon="@android:drawable/ic_menu_my_calendar"
+      android:title="Calcular IMC" />
+    <item
+      android:id="@+id/nav_weather"
+      android:icon="@android:drawable/ic_menu_day"
+      android:title="Clima" />
+  </group>
+
+  <item android:title="">
+    <menu>
+      <item
+        android:id="@+id/nav_exit"
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:title="Salir" />
+    </menu>
+  </item>
+</menu>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nav_graph"
+  app:startDestination="@id/nav_tip">
+
+  <fragment
+    android:id="@+id/nav_tip"
+    android:name="com.example.navdrawr.TipFragment"
+    android:label="Tip Calculator"
+    tools:layout="@layout/fragment_generic" />
+  <fragment
+    android:id="@+id/nav_currency"
+    android:name="com.example.navdrawr.CurrencyFragment"
+    android:label="Convertir Divisas"
+    tools:layout="@layout/fragment_generic" />
+  <fragment
+    android:id="@+id/nav_imc"
+    android:name="com.example.navdrawr.ImcFragment"
+    android:label="Calcular IMC"
+    tools:layout="@layout/fragment_generic" />
+  <fragment
+    android:id="@+id/nav_weather"
+    android:name="com.example.navdrawr.WeatherFragment"
+    android:label="Clima"
+    tools:layout="@layout/fragment_generic" />
+</navigation>
